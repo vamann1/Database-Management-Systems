@@ -1,0 +1,76 @@
+--sa se init o variabila cu un sir de litere. sa se parcurga sirul si sa se construiasca subsirul vocalelor si subsirul consoanelor
+
+SET SERVEROUTPUT ON
+
+DECLARE
+    SIR VARCHAR(40):= 'qwertyuio9pasdfgh3j2k*lzxcvb#nm';
+    VOCALE VARCHAR(30);
+    CONSOANE varchar(30);
+BEGIN
+    FOR I IN 1..lENGTH(SIR) LOOP
+        IF UPPER(SUBSTR(SIR, I, 1)) IN ('A', 'E', 'I', 'O', 'U') THEN 
+           VOCALE := VOCALE || SUBSTR(SIR, I, 1);
+        ELSIF REGEXP_LIKE(UPPER(SUBSTR(SIR, I, 1)), '^[A-Z]$') THEN 
+            CONSOANE:=CONSOANE || SUBSTR(SIR, I, 1);
+        END IF;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE(VOCALE);
+    DBMS_OUTPUT.PUT_LINE(CONSOANE);
+
+END;
+/
+
+DECLARE
+    SIR VARCHAR(40):= 'qwertyuio9pasdfgh3j2k*lzxcvb#nm';
+    VOCALE VARCHAR(30);
+    CONSOANE varchar(30);
+BEGIN
+    FOR I IN 1..lENGTH(SIR) LOOP
+        IF UPPER(SUBSTR(SIR, I, 1)) IN ('A', 'E', 'I', 'O', 'U') THEN 
+           VOCALE := VOCALE || SUBSTR(SIR, I, 1);
+        ELSIF UPPER(SUBSTR(SIR, I, 1)) BETWEEN 'A' AND 'Z' THEN 
+            CONSOANE:=CONSOANE || SUBSTR(SIR, I, 1);
+        END IF;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE(VOCALE);
+    DBMS_OUTPUT.PUT_LINE(CONSOANE);
+
+END;
+/
+
+
+--SA SE AFISEZE ID UL NUMELE SI PRENUMELE ANGAJATILOR CU ID_ANGAJAT INTRE 105 SI 115
+
+DECLARE
+    V_ID ANGAJATI.ID_ANGAJAT%TYPE;
+    V_NUME VARCHAR(20);
+    V_PRENUME VARCHAR(20);
+BEGIN
+    FOR I IN 105..115 LOOP
+    SELECT ID_ANGAJAT, NUME, PRENUME INTO V_ID, V_NUME, V_PRENUME FROM ANGAJATI WHERE ID_ANGAJAT=I;
+    DBMS_OUTPUT.PUT_LINE('ID ANGAJAT: ' ||  V_ID ||' '|| 'Angajat: '  || V_NUME || ' ' ||V_PRENUME);
+    END LOOP;
+
+END;
+/
+
+DECLARE
+    TYPE T_ANG IS RECORD(
+    ID_ANGAJAT ANGAJATI.ID_ANGAJAT%TYPE,
+    NUME VARCHAR(20),
+    PRENUME VARCHAR(20));
+    V T_ANG;
+    N NUMBER;
+BEGIN
+    FOR I IN 105..115 LOOP
+    SELECT COUNT(*) INTO N FROM ANGAJATI WHERE  ID_ANGAJAT=I;
+    IF N=1 THEN 
+    SELECT ID_ANGAJAT, NUME, PRENUME INTO V WHERE ID_ANGAJAT=I;
+    DBMS_OUTPUT.PUT_LINE('ID ANGAJAT: ' ||  V.ID_ANGAJAT ||' '|| 'Angajat: '  || V.NUME || ' ' ||V.PRENUME);
+    END IF;
+    END LOOP;
+
+END;
+/
+
+
